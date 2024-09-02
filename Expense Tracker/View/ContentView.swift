@@ -12,12 +12,20 @@ struct ContentView: View {
         NavigationStack{
             ScrollView{
                 VStack(alignment: .leading, spacing: 24){
-                    //MARK: Title
+                    // MARK: Title
                     Text("Overview")
                         .font(.title2)
                         .bold()
+                    
+                    // MARK: Transaction List
+                    RecentTransactionList()
+                    
+                    
                 }.padding()
                     .frame(maxWidth: .infinity, alignment: .init(horizontal: .leading, vertical: .top))
+                
+              
+                
             }
             .background(Color.background)
             .navigationBarTitleDisplayMode(.inline)
@@ -30,13 +38,28 @@ struct ContentView: View {
                         
                 }
             }
-        }
+        }.accentColor(.primary)
+
     }
 }
-#Preview {
-    ContentView()
-}
-#Preview {
+//#Preview {
+//    ContentView()
+//}
+//#Preview {
+//        ContentView()
+//            .colorScheme(.dark)
+//}
+
+
+struct ContentView_Previews: PreviewProvider {
+    static let transactionListVM: TransactionListViewModel = {
+        let transactionListVM = TransactionListViewModel()
+        transactionListVM.transactions = transactionListPreviewData
+        return transactionListVM
+    }()
+    
+    static var previews: some View {
         ContentView()
-            .colorScheme(.dark)
+            .environmentObject(transactionListVM)
+    }
 }
