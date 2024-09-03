@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import SwiftUICharts
 
 struct ContentView: View {
+    @EnvironmentObject var transactionListVM: TransactionListViewModel
+    
+    
     var body: some View {
         NavigationStack{
             ScrollView{
@@ -17,6 +21,23 @@ struct ContentView: View {
                         .font(.title2)
                         .bold()
                     
+                    // MARK: Chart
+                    let data = transactionListVM.accumulateTransactions()
+                    let totalExpenses = data.last?.1 ?? 0
+                    
+                    CardView {
+                        VStack{
+                            ChartLabel(totalExpenses.formatted(.currency(code: "USD")), type: .title)
+                            
+                            LineChart()
+                        }
+                                .background(Color(.systemBackground))
+                        
+                    }
+                        .data(data)
+                        .chartStyle(ChartStyle(backgroundColor: .background, foregroundColor: ColorGradient( Color.icon.opacity(0.4), Color.icon)))
+                        .frame(height: 300)
+                    
                     // MARK: Transaction List
                     RecentTransactionList()
                     
@@ -24,7 +45,7 @@ struct ContentView: View {
                 }.padding()
                     .frame(maxWidth: .infinity, alignment: .init(horizontal: .leading, vertical: .top))
                 
-              
+                
                 
             }
             .background(Color.background)
@@ -35,11 +56,11 @@ struct ContentView: View {
                     Image(systemName: "bell.badge")
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(Color.icon, .primary)
-                        
+                    
                 }
             }
         }.accentColor(.primary)
-
+        
     }
 }
 //#Preview {
