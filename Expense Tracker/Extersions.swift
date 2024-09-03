@@ -33,3 +33,12 @@ extension Date: Strideable{
         return self.formatted(.dateTime.year().month().day())
     }
 }
+
+extension Double{
+    func roundedTo2Digits() -> Double {
+        return (self * 100).rounded() / 100
+    }
+    }
+
+
+
